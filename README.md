@@ -53,3 +53,5 @@ Shell script example
 cd /home/dabuka/streakcounter/
 java -jar /home/dabuka/streakcounter/streakcounter.jar $1 $2 $3
 ```
+
+Bitcoin Tips: 128fbjyk2EMxEv59V3Fr6esmNZjfph1KET
