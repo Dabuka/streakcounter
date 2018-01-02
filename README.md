@@ -46,3 +46,10 @@ $ sc stats
 2016                120(32%)  153(41%)  118(32%)  67(18%)  
 2017      14(3%)    203(55%)  244(66%)  175(47%)  55(15%)  
 ```
+
+Shell script example
+```
+#!/bin/sh
+cd /home/dabuka/streakcounter/
+java -jar /home/dabuka/streakcounter/streakcounter.jar $1 $2 $3
+```
