@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="https://github.com/dabuka/streakcounter/schema"
+    targetNamespace="https://github.com/dabuka/streakcounter/schema" elementFormDefault="qualified">
+    <xs:element name="streakData">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="streak" type="StreakType">
+                    <xs:annotation>
+                        <xs:documentation>Streaks (habits, etc.)</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="lastUpdate" type="xs:dateTime">
+                <xs:annotation>
+                    <xs:documentation>Date and time of the last database change</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="StreakType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Name of the streak</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="created" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Streak ctreation date</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="deleted" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Streak deletion date</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="streakBreaks">
+                <xs:annotation>
+                    <xs:documentation>Streak break dates</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="streakBreakDate"
+                            type="xs:date">
+                            <xs:annotation>
+                                <xs:documentation>Streak break date</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="breakAfter" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation>If this is true - there will be a separator after this streak. Added to be able to separate positive(neutral) from negative streaks (for example separate sport, contact lenses usage from alcohol streak).</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>
