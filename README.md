@@ -20,3 +20,29 @@ Available commands:
 * since [dd.mm.yyyy] - count breaks since date (no date - since year start)
 * stats - year by year stats
 * help - this text
+
+Example output with comments:
+```
+$ sc                                          #script running java -jar streakCounter.jar
+=== 31.12.2017 15:26:05 ===                   #last db change time
+01. Lenses -> 4                               #4 days without lenses
+02. SEX -> 3                                  #3 days without sex
+---------------------------                   #separator of good/neutral streaks from bad streaks
+03. DIET -> 2                                 #2 days on a diet
+04. SMOKING -> 2                              #2 days without smoking
+05. ALCOHOL -> 5                              #5 days without alcohol
+
+
+$ sc since                                    #this year stats
+01. Lenses -> 0/2 (0%) created 11.12.2017     #used lenses 0/2 days this year
+02. SEX -> 0/2 (0%) created 18.06.2016
+03. DIET -> 0/2 (0%) created 18.06.2016
+04. SMOKING -> 0/2 (0%) created 18.06.2016
+05. ALCOHOL -> 0/2 (0%) created 18.06.2016
+
+
+$ sc stats
+          Lenses    SEX       DIET      SMOKING   ALCOHOL  
+2016                120(32%)  153(41%)  118(32%)  67(18%)  
+2017      14(3%)    203(55%)  244(66%)  175(47%)  55(15%)  
+```
