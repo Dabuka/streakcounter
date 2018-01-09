@@ -13,10 +13,10 @@ How to use:
 Streak Counter stores its database in a file. File location is set in streakCounter.properties and defaults to current directory. Database can be put in Dropbox or other cloud service directory to sync between desktops.
 
 Available commands:
-* add <name> - add streak
-* break <list of names or numbers separated by comma> [days in the past] - break the streak
-* reset <name or number> - delete all breaks from streak with given name or number and reset creation date
-* delete <name or number> - delete streak (info still kept in database)
+* add &lt;name&gt; - add streak
+* break &lt;list of names or numbers separated by comma&gt; [days in the past] - break the streak
+* reset &lt;name or number&gt; - delete all breaks from streak with given name or number and reset creation date
+* delete &lt;name or number&gt; - delete streak (info still kept in database)
 * since [dd.mm.yyyy] - count breaks since date (no date - since year start)
 * stats - year by year stats
 * help - this text
