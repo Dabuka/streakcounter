@@ -392,7 +392,7 @@ public final class StreakCounter {
             String[] newRow = new String[columnsCount];
             String year = dataMapEntry.getKey();
 
-            int daysInYear = getDaysInYear(year);
+            long daysInYear = getDaysInYear(year);
 
             Map<String, Integer> yearData = dataMapEntry.getValue();
             newRow[0] = year;
@@ -461,9 +461,19 @@ public final class StreakCounter {
      * @param year omg, string year.
      * @return no way, it's the number of days!
      */
-    private static int getDaysInYear(String year) {
+    @SuppressWarnings("UseOfObsoleteDateTimeApi")
+    private static long getDaysInYear(String year) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, Integer.valueOf(year));
-        return cal.getActualMaximum(Calendar.DAY_OF_YEAR);
+        String currentYear = String.valueOf(cal.get(Calendar.YEAR));
+
+        if (currentYear.equals(year)) {
+            Calendar yearStart = Calendar.getInstance();
+            yearStart.set(yearStart.get(Calendar.YEAR), Calendar.JANUARY, 1);
+            return ChronoUnit.DAYS.between(yearStart.toInstant(), new Date().toInstant()) + 1;
+        } else {
+            cal.set(Calendar.YEAR, Integer.valueOf(year));
+            return cal.getActualMaximum(Calendar.DAY_OF_YEAR);
+        }
+
     }
 }
