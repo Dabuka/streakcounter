@@ -5,10 +5,25 @@
     <xs:element name="streakData">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="streak" type="StreakType">
-                    <xs:annotation>
-                        <xs:documentation>Streaks (habits, etc.)</xs:documentation>
-                    </xs:annotation>
+                <xs:element name="quotes" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="quote" maxOccurs="unbounded" minOccurs="0"
+                                type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="streaks" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="streak"
+                                type="StreakType">
+                                <xs:annotation>
+                                    <xs:documentation>Streaks (habits, etc.)</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
                 </xs:element>
             </xs:sequence>
             <xs:attribute name="lastUpdate" type="xs:dateTime">

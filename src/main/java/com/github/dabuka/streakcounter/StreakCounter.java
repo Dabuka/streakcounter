@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -123,6 +124,13 @@ public final class StreakCounter {
             case "stats":
                 stats();
                 break;
+            case "qadd":
+                if (args.length < 2) {
+                    usage();
+                } else {
+                    addQuote(args[1].trim());
+                }
+                break;
             default:
                 usage();
         }
@@ -179,7 +187,8 @@ public final class StreakCounter {
         System.out.println("This small console app can help you watch your streaks (habbit streaks or some other).");
         System.out.println("It can provide info like: 'I don't smoke for 75 days', " +
                 "'I use this pair of contact lenses for 14 days', " +
-                "'I've had sex 3 times in 2017' (oh, man) and so on\n");
+                "'I've had sex 3 times in 2017' (oh, man) and so on");
+        System.out.println("There's also a bonus feature - quote of the day display.\n");
 
         System.out.println("How to use: add streak, save breaks in app, get stats.\n");
 
@@ -194,15 +203,17 @@ public final class StreakCounter {
         System.out.println("delete <name or number> - delete streak (info still kept in database)");
         System.out.println("since [dd.mm.yyyy] - count breaks since date (no date - since year start)");
         System.out.println("stats - year by year stats");
+        System.out.println("qadd <text> - add a quote to the 'Quote of the day' list");
         System.out.println("help - this text");
     }
 
     private static void list() {
-        if (streakData.getStreak().isEmpty()) {
+        if (streakData.getStreaks() == null || streakData.getStreaks().getStreak().isEmpty()) {
             System.out.println("You have no streaks!\n");
             usage();
             return;
         }
+
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         if (streakData.getLastUpdate() != null) {
             System.out.println(
@@ -232,10 +243,21 @@ public final class StreakCounter {
                 System.out.println("---------------------------");
             }
         }
+
+        if (streakData.getQuotes() != null && !streakData.getQuotes().getQuote().isEmpty()) {
+            System.out.println("\n==== QUOTE OF THE DAY =====");
+            List<String> quoteList = streakData.getQuotes().getQuote();
+            int dayOfYear = LocalDate.now().getDayOfYear();
+            System.out.println(quoteList.get(dayOfYear%quoteList.size()));
+        }
     }
 
     private static void add(String name) throws Exception {
-        List<StreakType> streakList = streakData.getStreak();
+        StreakData.Streaks streaksEl = streakData.getStreaks();
+        if (streaksEl == null) {
+            streaksEl = new StreakData.Streaks();
+        }
+        List<StreakType> streakList = streaksEl.getStreak();
         for (StreakType streak : streakList) {
             if (name.equals(streak.getName())) {
                 System.out.println("Streak with this name already exists.");
@@ -246,7 +268,8 @@ public final class StreakCounter {
         StreakType newStreak = new StreakType();
         newStreak.setName(name);
         newStreak.setCreated(getCurrentDate());
-        streakData.getStreak().add(newStreak);
+        streaksEl.getStreak().add(newStreak);
+        streakData.setStreaks(streaksEl);
         marshaller.marshal(streakData, file);
         list();
     }
@@ -323,7 +346,7 @@ public final class StreakCounter {
 
         NumberFormat format = new DecimalFormat("00");
 
-        List<StreakType> streakList = streakData.getStreak();
+        List<StreakType> streakList = streakData.getStreaks().getStreak();
         for (int i = 0; i < streakList.size(); i++) {
             StreakType streak = streakList.get(i);
             int breaksCount = 0;
@@ -346,7 +369,7 @@ public final class StreakCounter {
 
     /** Gets year by year stats. */
     private static void stats() {
-        List<StreakType> streaks = streakData.getStreak();
+        List<StreakType> streaks = streakData.getStreaks().getStreak();
         int columnsCount = streaks.size() + 1; //+1 for first column with years
 
         StringBuilder formatStr = new StringBuilder();
@@ -409,6 +432,28 @@ public final class StreakCounter {
         }
     }
 
+    /** Adds new quote to the quotes list.*/
+    private static void addQuote(String newQuote) throws Exception {
+        System.out.println(newQuote);
+        StreakData.Quotes quotesEl = streakData.getQuotes();
+        if (quotesEl == null) {
+            quotesEl = new StreakData.Quotes();
+        }
+        List<String> quoteList = quotesEl.getQuote();
+        for (String quote : quoteList) {
+            if (newQuote.equals(quote)) {
+                System.out.println("Quote already exists.");
+                return;
+            }
+        }
+
+        streakData.setQuotes(quotesEl);
+        quoteList.add(newQuote);
+
+        marshaller.marshal(streakData, file);
+        System.out.println("Done.");
+    }
+
     /**
      * Get current date in form of {@link XMLGregorianCalendar}
      *
@@ -451,7 +496,7 @@ public final class StreakCounter {
      * @return Streak list.
      */
     private static List<StreakType> getActualStreakList() {
-        List<StreakType> streakList = streakData.getStreak();
+        List<StreakType> streakList = streakData.getStreaks().getStreak();
         return streakList.stream().filter(streak -> streak.getDeleted() == null).collect(Collectors.toList());
     }
 

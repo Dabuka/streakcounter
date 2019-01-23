@@ -1,6 +1,7 @@
 This small console app can help you watch your streaks (habbit streaks or some other).
 
 It can provide info like: 'I don't smoke for 75 days', 'I use this pair of contact lenses for 14 days', 'I've had sex 3 times in 2017' (oh, man) and so on.
+There's also a bonus feature - quote of the day display.
 
 You need [Java 8](https://www.java.com) to run Streak Counter and JDK 8 + Maven to build from sources.
 
@@ -19,6 +20,7 @@ Available commands:
 * delete &lt;name or number&gt; - delete streak (info still kept in database)
 * since [dd.mm.yyyy] - count breaks since date (no date - since year start)
 * stats - year by year stats
+* qadd "&lt;text&gt;" - add a quote to the 'Quote of the day' list
 * help - this text
 
 Example output with comments:
@@ -31,6 +33,9 @@ $ sc                                          #script running java -jar streakCo
 03. DIET -> 2                                 #2 days on a diet
 04. SMOKING -> 2                              #2 days without smoking
 05. ALCOHOL -> 5                              #5 days without alcohol
+
+==== QUOTE OF THE DAY =====
+Live life full
 
 
 $ sc since                                    #this year stats
@@ -51,7 +56,7 @@ Shell script example
 ```
 #!/bin/sh
 cd /home/dabuka/streakcounter/
-java -jar /home/dabuka/streakcounter/streakcounter.jar $1 $2 $3
+java -jar /home/dabuka/streakcounter/streakcounter.jar "$@"
 ```
 
 Bitcoin Tips: 128fbjyk2EMxEv59V3Fr6esmNZjfph1KET
