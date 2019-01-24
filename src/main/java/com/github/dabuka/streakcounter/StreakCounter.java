@@ -178,7 +178,7 @@ public final class StreakCounter {
     private static String readDBFile() throws Exception
     {
         byte[] encoded = Files.readAllBytes(Paths.get(getDBFilePath()));
-        return new String(encoded, Charset.defaultCharset());
+        return new String(encoded, Charset.forName("UTF-8"));
     }
 
     /** Prints help to console. */
