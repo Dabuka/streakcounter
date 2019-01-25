@@ -434,7 +434,6 @@ public final class StreakCounter {
 
     /** Adds new quote to the quotes list.*/
     private static void addQuote(String newQuote) throws Exception {
-        System.out.println(newQuote);
         StreakData.Quotes quotesEl = streakData.getQuotes();
         if (quotesEl == null) {
             quotesEl = new StreakData.Quotes();
